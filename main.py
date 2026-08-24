@@ -21,7 +21,7 @@ def veritabani_yukle():
 sakus_veritabanı = veritabani_yukle()
 
 # ==========================================
-# 1. PUSULA (COMPASS) VE GÜNEŞ MATEMATİĞİ (ANA İSKELET - DOKUNULMADI)
+# 1. PUSULA (COMPASS) VE GÜNEŞ MATEMATİĞİ
 # ==========================================
 def yon_hesapla(enlem1, boylam1, enlem2, boylam2):
     lat1, lat2 = math.radians(enlem1), math.radians(enlem2)
@@ -69,7 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL)
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -122,7 +122,7 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
         <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
             <a-assets>
-                <!-- KRİTİK NOKTA: GitHub engelini aşmak için jsDelivr CDN kullanıyoruz! -->
+                <!-- TAM LİNK BURADA -->
                 <a-asset-item id="real-bus" src="https://cdn.jsdelivr.net/gh/25010203026-cloud/gunesli-koltuk@main/otobus.glb"></a-asset-item>
             </a-assets>
 
@@ -136,8 +136,8 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
             <!-- ========================================== -->
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- Otobüs Modeli (Scale ayarı 1 1 1. Eğer model çok küçükse burayı 5 5 5 veya 10 10 10 yap) -->
-                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- OTOBÜSÜ BURADA KÜÇÜLTTÜM: scale="0.2 0.2 0.2" -->
+                <a-entity gltf-model="#real-bus" scale="0.2 0.2 0.2" position="0 0.5 0" shadow="cast: true; receive: true"></a-entity>
                 
                 <!-- =================== LED TABELA =================== -->
                 <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
@@ -166,6 +166,7 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     </html>
     """
     components.html(html_code, height=470)
+
 # ==========================================
 # 3. KULLANICI ARAYÜZÜ (AKILLI ARAMA VE MOBİL OPTİMİZASYON)
 # ==========================================
@@ -267,7 +268,6 @@ else:
     
     with col2:
         if st.session_state.sonuc_goster:
-            # KRİTİK DEĞİŞİKLİK: Seçilen hattın adını (Örn: 24K) animasyon motoruna gönderiyoruz!
             uc_boyutlu_motor(st.session_state.sag_oran, st.session_state.sol_oran, st.session_state.yukseklik, f"{st.session_state.zaman_etiketi}", hat_kisa)
         
         with st.expander("🗺️ Güneş Analiz Haritası (Isı Haritası)", expanded=True if not st.session_state.sonuc_goster else False):
