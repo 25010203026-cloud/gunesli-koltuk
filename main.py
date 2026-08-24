@@ -69,7 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL & DRACO DECODER)
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GELİŞMİŞ SBB OTOBÜSÜ)
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -81,7 +81,7 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
         light_color = "#94a3b8"
         dir_intensity = "0.3"
         cisim = "🌙 Ay"
-        headlight_intensity = "3.0"
+        headlight_intensity = "5.0"
         far_rengi = "#fde047"
     elif abs(yukseklik) < 15: 
         env_preset = "yavapai" 
@@ -115,47 +115,78 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
                       border-radius: 25px; font-family: sans-serif; font-weight: bold; 
                       z-index: 10; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; font-size: 15px;
                       border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);}}
-            #loading-screen {{ position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                               background: rgba(0, 0, 0, 0.8); color: #facc15; padding: 20px 30px; 
-                               border-radius: 15px; font-family: sans-serif; font-weight: bold; font-size: 18px; 
-                               z-index: 20; text-align: center; border: 2px solid #facc15; }}
         </style>
     </head>
     <body>
         <div class="panel">{mesaj}</div>
-        
-        <div id="loading-screen">
-            🚌 3D Otobüs İndiriliyor...<br>
-            <span style="font-size: 14px; color: #fff;">Lütfen Bekleyin!</span>
-        </div>
 
-        <!-- DRACO DECODER EKLENDİ! Sketchfab şifrelemesini kıracak -->
-        <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" 
-                 gltf-model="dracoDecoderPath: https://www.gstatic.com/draco/v1/decoders/;"
-                 style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
+        <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
             <a-entity light="type: ambient; color: #ffffff; intensity: 0.8"></a-entity>
             <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048;" position="{x_pos} {y_pos} 5"></a-entity>
 
-            <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
+            <!-- ========================================== -->
+            <!-- SIFIRDAN KODLANMIŞ DETAYLI SBB OTOBÜSÜ     -->
+            <!-- ========================================== -->
+            <a-entity position="0 0.5 -2" animation="property: position; to: 0 0.53 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- Githack Canlı Linki -->
-                <a-entity id="my-bus" gltf-model="url(https://raw.githack.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb)" 
-                          scale="1 1 1" position="0 0.5 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- Ana Gövde Alt (SBB Yeşili) -->
+                <a-box position="0 0.4 0" width="2" height="0.8" depth="5.2" color="#16a34a" material="roughness: 0.5" shadow="cast: true; receive: true"></a-box>
+                
+                <!-- Ana Gövde Üst (Beyaz) -->
+                <a-box position="0 1.15 0" width="2" height="0.7" depth="5.2" color="#f8fafc" material="roughness: 0.4"></a-box>
+                
+                <!-- Ön Cam -->
+                <a-box position="0 1.2 -2.61" width="1.9" height="0.6" depth="0.05" color="#0f172a" material="opacity: 0.9; roughness: 0.1"></a-box>
+                
+                <!-- Arka Cam -->
+                <a-box position="0 1.2 2.61" width="1.9" height="0.6" depth="0.05" color="#0f172a" material="opacity: 0.9; roughness: 0.1"></a-box>
+
+                <!-- Yan Cam Şeritleri (Siyah) -->
+                <a-box position="-1.01 1.2 0" width="0.05" height="0.6" depth="5" color="#0f172a" material="opacity: 0.9"></a-box>
+                <a-box position="1.01 1.2 0" width="0.05" height="0.6" depth="5" color="#0f172a" material="opacity: 0.9"></a-box>
                 
                 <!-- LED TABELA -->
-                <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
-                <a-text value="{hat_adi}" color="#ef4444" position="0 3.2 -2.55" rotation="0 180 0" align="center" width="8" material="shader: flat;"></a-text>
-                
-                <!-- Farlar -->
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="-1 1 -3" rotation="-5 180 0"></a-entity>
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="1 1 -3" rotation="-5 180 0"></a-entity>
+                <a-box position="0 1.6 -2.62" width="1.6" height="0.25" depth="0.05" color="#000"></a-box>
+                <a-text value="{hat_adi}" color="#ef4444" position="0 1.6 -2.65" rotation="0 180 0" align="center" width="7" material="shader: flat;"></a-text>
 
+                <!-- =================== DÖNEN TEKERLEKLER =================== -->
+                <a-entity position="-1 0 -1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.4" height="0.3" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.2" height="0.32" rotation="0 0 90" color="#94a3b8"></a-cylinder> <!-- Jant -->
+                </a-entity>
+                
+                <a-entity position="1 0 -1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.4" height="0.3" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.2" height="0.32" rotation="0 0 90" color="#94a3b8"></a-cylinder>
+                </a-entity>
+
+                <a-entity position="-1 0 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.4" height="0.3" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.2" height="0.32" rotation="0 0 90" color="#94a3b8"></a-cylinder>
+                </a-entity>
+
+                <a-entity position="1 0 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.4" height="0.3" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.2" height="0.32" rotation="0 0 90" color="#94a3b8"></a-cylinder>
+                </a-entity>
+
+                <!-- =================== FARLAR =================== -->
+                <!-- Ön Farlar -->
+                <a-circle position="-0.8 0.4 -2.61" radius="0.15" color="{far_rengi}" material="shader: flat; opacity: {1.0 if yukseklik < 0 else 0.5}"></a-circle>
+                <a-circle position="0.8 0.4 -2.61" radius="0.15" color="{far_rengi}" material="shader: flat; opacity: {1.0 if yukseklik < 0 else 0.5}"></a-circle>
+                <!-- Işık Hüzmesi (Sadece Gece) -->
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 45; penumbra: 0.5; castShadow: true;" position="-0.8 0.4 -2.6" rotation="-10 180 0"></a-entity>
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 45; penumbra: 0.5; castShadow: true;" position="0.8 0.4 -2.6" rotation="-10 180 0"></a-entity>
+                
+                <!-- Arka Stop Lambaları (Kırmızı) -->
+                <a-box position="-0.8 0.4 2.6" width="0.3" height="0.1" depth="0.05" color="#ef4444" material="shader: flat"></a-box>
+                <a-box position="0.8 0.4 2.6" width="0.3" height="0.1" depth="0.05" color="#ef4444" material="shader: flat"></a-box>
             </a-entity>
 
             <!-- AKAN YOL -->
-            <a-plane position="0 0 -5" rotation="-90 0 0" width="6" height="40" color="#334155" shadow="receive: true"></a-plane>
+            <a-plane position="0 0.01 -5" rotation="-90 0 0" width="6" height="40" color="#334155" shadow="receive: true"></a-plane>
             <a-entity animation="property: position; from: 0 0.02 -15; to: 0 0.02 5; loop: true; dur: 500; easing: linear">
                 <a-plane position="0 0 0" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
                 <a-plane position="0 0 4" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
@@ -164,20 +195,9 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
                 <a-plane position="0 0 16" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
             </a-entity>
 
-            <a-entity camera look-controls orbit-controls="target: 0 1.5 -2; minDistance: 4; maxDistance: 20; initialPosition: -8 4 6; enableDamping: true; dampingFactor: 0.05"></a-entity>
+            <!-- Kamera -->
+            <a-entity camera look-controls orbit-controls="target: 0 1.5 -2; minDistance: 4; maxDistance: 20; initialPosition: -7 4 7; enableDamping: true; dampingFactor: 0.05"></a-entity>
         </a-scene>
-
-        <script>
-            // Otobüs indiğinde ekranı kapat
-            document.querySelector('#my-bus').addEventListener('model-loaded', function () {{
-                document.getElementById('loading-screen').style.display = 'none';
-            }});
-            
-            // Eğer bir hata olur da 10 saniye içinde inmezse ekranı zorla kapat!
-            setTimeout(function() {{
-                document.getElementById('loading-screen').style.display = 'none';
-            }}, 10000);
-        </script>
     </body>
     </html>
     """
