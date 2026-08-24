@@ -122,26 +122,24 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
         <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
             <a-assets>
-                <!-- KENDİ İNDİRECEĞİN OTOBÜS MODELİNİN GITHUB LİNKİ BURADA -->
-                <a-asset-item id="real-bus" src="https://raw.githubusercontent.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb"></a-asset-item>
+                <!-- KRİTİK NOKTA: GitHub engelini aşmak için jsDelivr CDN kullanıyoruz! -->
+                <a-asset-item id="real-bus" src="https://cdn.jsdelivr.net/gh/25010203026-cloud/gunesli-koltuk@main/otobus.glb"></a-asset-item>
             </a-assets>
 
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
             
-            <a-entity light="type: ambient; color: #ffffff; intensity: 0.5"></a-entity>
+            <a-entity light="type: ambient; color: #ffffff; intensity: 0.8"></a-entity>
             <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048;" position="{x_pos} {y_pos} 5"></a-entity>
 
             <!-- ========================================== -->
             <!-- GERÇEK 3D OTOBÜS MODELİ                    -->
             <!-- ========================================== -->
-            <!-- Otobüsü tam yere (y=0) bastırdık, uçma sorunu bitti! -->
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- İndirdiğin 3D Modeli Çağırıyoruz -->
-                <a-entity gltf-model="#real-bus" scale="15 15 15" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- Otobüs Modeli (Scale ayarı 1 1 1. Eğer model çok küçükse burayı 5 5 5 veya 10 10 10 yap) -->
+                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
                 
                 <!-- =================== LED TABELA =================== -->
-                <!-- DİKKAT: İndirdiğin modelin boyutu farklı olursa tabelanın Y (yükseklik) ve Z (derinlik) ayarını değiştirmen gerekebilir! -->
                 <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
                 <a-text value="{hat_adi}" color="#ef4444" position="0 3.2 -2.55" rotation="0 180 0" align="center" width="8" material="shader: flat;"></a-text>
                 
@@ -151,7 +149,7 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
 
             </a-entity>
 
-            <!-- AKAN YOL (Tam yere sıfırlandı) -->
+            <!-- AKAN YOL -->
             <a-plane position="0 0 -5" rotation="-90 0 0" width="6" height="40" color="#334155" shadow="receive: true"></a-plane>
             <a-entity animation="property: position; from: 0 0.02 -15; to: 0 0.02 5; loop: true; dur: 500; easing: linear">
                 <a-plane position="0 0 0" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
