@@ -69,7 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (ASENKRON YÜKLEME)
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL & DRACO DECODER)
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -124,27 +124,25 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     <body>
         <div class="panel">{mesaj}</div>
         
-        <!-- YÜKLEME EKRANI BURADA -->
         <div id="loading-screen">
-            🚌 21 MB Gerçek Otobüs İndiriliyor...<br>
-            <span style="font-size: 14px; color: #fff;">Lütfen 10-15 Saniye Bekleyin!</span>
+            🚌 3D Otobüs İndiriliyor...<br>
+            <span style="font-size: 14px; color: #fff;">Lütfen Bekleyin!</span>
         </div>
 
-        <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
+        <!-- DRACO DECODER EKLENDİ! Sketchfab şifrelemesini kıracak -->
+        <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" 
+                 gltf-model="dracoDecoderPath: https://www.gstatic.com/draco/v1/decoders/;"
+                 style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
-            
             <a-entity light="type: ambient; color: #ffffff; intensity: 0.8"></a-entity>
             <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048;" position="{x_pos} {y_pos} 5"></a-entity>
 
-            <!-- ========================================== -->
-            <!-- OTOBÜS MODELİ (DİREKT LİNK İLE ASENKRON)   -->
-            <!-- ========================================== -->
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- Model Yüklendiğinde O Çalışacak Script İçin ID Verdik: id="my-bus" -->
-                <a-entity id="my-bus" gltf-model="url(https://cdn.jsdelivr.net/gh/25010203026-cloud/gunesli-koltuk@main/otobus.glb)" 
-                          scale="0.4 0.4 0.4" position="0 0.2 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- Githack Canlı Linki -->
+                <a-entity id="my-bus" gltf-model="url(https://raw.githack.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb)" 
+                          scale="1 1 1" position="0 0.5 0" shadow="cast: true; receive: true"></a-entity>
                 
                 <!-- LED TABELA -->
                 <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
@@ -169,11 +167,16 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
             <a-entity camera look-controls orbit-controls="target: 0 1.5 -2; minDistance: 4; maxDistance: 20; initialPosition: -8 4 6; enableDamping: true; dampingFactor: 0.05"></a-entity>
         </a-scene>
 
-        <!-- Otobüs İnince Bekleme Ekranını Gizleyen JavaScript -->
         <script>
+            // Otobüs indiğinde ekranı kapat
             document.querySelector('#my-bus').addEventListener('model-loaded', function () {{
                 document.getElementById('loading-screen').style.display = 'none';
             }});
+            
+            // Eğer bir hata olur da 10 saniye içinde inmezse ekranı zorla kapat!
+            setTimeout(function() {{
+                document.getElementById('loading-screen').style.display = 'none';
+            }}, 10000);
         </script>
     </body>
     </html>
