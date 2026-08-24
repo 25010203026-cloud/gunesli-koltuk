@@ -69,7 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL)
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (ASENKRON YÜKLEME)
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -115,31 +115,38 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
                       border-radius: 25px; font-family: sans-serif; font-weight: bold; 
                       z-index: 10; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; font-size: 15px;
                       border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);}}
+            #loading-screen {{ position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                               background: rgba(0, 0, 0, 0.8); color: #facc15; padding: 20px 30px; 
+                               border-radius: 15px; font-family: sans-serif; font-weight: bold; font-size: 18px; 
+                               z-index: 20; text-align: center; border: 2px solid #facc15; }}
         </style>
     </head>
     <body>
         <div class="panel">{mesaj}</div>
+        
+        <!-- YÜKLEME EKRANI BURADA -->
+        <div id="loading-screen">
+            🚌 21 MB Gerçek Otobüs İndiriliyor...<br>
+            <span style="font-size: 14px; color: #fff;">Lütfen 10-15 Saniye Bekleyin!</span>
+        </div>
+
         <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
-            <a-assets>
-                <!-- DİKKAT: Cache sorununu çözmek için jsdelivr yerine Githack'in CANLI linkini koydum! -->
-                <a-asset-item id="real-bus" src="https://raw.githack.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb"></a-asset-item>
-            </a-assets>
-
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
             
             <a-entity light="type: ambient; color: #ffffff; intensity: 0.8"></a-entity>
             <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048;" position="{x_pos} {y_pos} 5"></a-entity>
 
             <!-- ========================================== -->
-            <!-- GERÇEK 3D OTOBÜS MODELİ                    -->
+            <!-- OTOBÜS MODELİ (DİREKT LİNK İLE ASENKRON)   -->
             <!-- ========================================== -->
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- Otobüs Modeli (Eğer otobüs çok küçük kalırsa buradaki 1 1 1'leri 5 5 5 yap) -->
-                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- Model Yüklendiğinde O Çalışacak Script İçin ID Verdik: id="my-bus" -->
+                <a-entity id="my-bus" gltf-model="url(https://cdn.jsdelivr.net/gh/25010203026-cloud/gunesli-koltuk@main/otobus.glb)" 
+                          scale="0.4 0.4 0.4" position="0 0.2 0" shadow="cast: true; receive: true"></a-entity>
                 
-                <!-- =================== LED TABELA =================== -->
+                <!-- LED TABELA -->
                 <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
                 <a-text value="{hat_adi}" color="#ef4444" position="0 3.2 -2.55" rotation="0 180 0" align="center" width="8" material="shader: flat;"></a-text>
                 
@@ -159,9 +166,15 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
                 <a-plane position="0 0 16" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
             </a-entity>
 
-            <!-- Kamera -->
             <a-entity camera look-controls orbit-controls="target: 0 1.5 -2; minDistance: 4; maxDistance: 20; initialPosition: -8 4 6; enableDamping: true; dampingFactor: 0.05"></a-entity>
         </a-scene>
+
+        <!-- Otobüs İnince Bekleme Ekranını Gizleyen JavaScript -->
+        <script>
+            document.querySelector('#my-bus').addEventListener('model-loaded', function () {{
+                document.getElementById('loading-screen').style.display = 'none';
+            }});
+        </script>
     </body>
     </html>
     """
