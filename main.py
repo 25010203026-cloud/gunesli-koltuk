@@ -69,10 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GELİŞMİŞ MODEL & TABELA)
-# ==========================================
-# ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GELİŞMİŞ MODEL, CAMLAR VE TABELA)
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL)
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -124,77 +121,38 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
         <div class="panel">{mesaj}</div>
         <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
+            <a-assets>
+                <!-- KENDİ İNDİRECEĞİN OTOBÜS MODELİNİN GITHUB LİNKİ BURADA -->
+                <a-asset-item id="real-bus" src="https://raw.githubusercontent.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb"></a-asset-item>
+            </a-assets>
+
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
             
             <a-entity light="type: ambient; color: #ffffff; intensity: 0.5"></a-entity>
             <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048;" position="{x_pos} {y_pos} 5"></a-entity>
-            <a-sphere position="{x_pos} {y_pos+2} -10" radius="2" material="shader: flat; color: {light_color}"></a-sphere>
 
             <!-- ========================================== -->
-            <!-- ŞEFFAF CAMLI VE İÇ MEKANLI OTOBÜS          -->
+            <!-- GERÇEK 3D OTOBÜS MODELİ                    -->
             <!-- ========================================== -->
-            <a-entity position="0 0.8 -2" animation="property: position; to: 0 0.83 -2; dir: alternate; dur: 200; loop: true; easing: easeInOutSine">
+            <!-- Otobüsü tam yere (y=0) bastırdık, uçma sorunu bitti! -->
+            <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- Otobüsün İskeleti (İçi boş görünsün diye tavan, taban ve arka duvar eklendi) -->
-                <!-- Taban -->
-                <a-box position="0 0.25 0" width="1.9" height="0.1" depth="5" color="#0f172a" shadow="receive: true"></a-box>
-                <!-- Tavan -->
-                <a-box position="0 1.55 0" width="1.9" height="0.1" depth="5" color="#f8fafc" material="metalness: 0.3; roughness: 0.2" shadow="cast: true"></a-box>
-                <!-- Arka Duvar -->
-                <a-box position="0 0.9 2.45" width="1.9" height="1.2" depth="0.1" color="#f8fafc" material="metalness: 0.2"></a-box>
+                <!-- İndirdiğin 3D Modeli Çağırıyoruz -->
+                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
                 
-                <!-- Dış Kaporta Yeşili (Sadece alt kısım) -->
-                <a-box position="0 0.45 0" width="1.88" height="0.4" depth="4.98" color="#16a34a" material="roughness: 0.6"></a-box>
-
-                <!-- ŞEFFAF CAMLAR -->
-                <a-box position="0 1.1 -2.45" width="1.9" height="0.8" depth="0.05" color="#87CEEB" material="transparent: true; opacity: 0.3; metalness: 0.9; roughness: 0.05" shadow="cast: false"></a-box>
-                <a-box position="-0.95 1.1 0" width="0.05" height="0.8" depth="4.8" color="#87CEEB" material="transparent: true; opacity: 0.3; metalness: 0.9; roughness: 0.05" shadow="cast: false"></a-box>
-                <a-box position="0.95 1.1 0" width="0.05" height="0.8" depth="4.8" color="#87CEEB" material="transparent: true; opacity: 0.3; metalness: 0.9; roughness: 0.05" shadow="cast: false"></a-box>
-                
-                <!-- =================== İÇ MEKAN (KOLTUKLAR) =================== -->
-                <a-box position="-0.5 0.5 1.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                <a-box position="0.5 0.5 1.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                <a-box position="-0.5 0.5 0.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                <a-box position="0.5 0.5 0.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                <a-box position="-0.5 0.5 -0.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                <a-box position="0.5 0.5 -0.5" width="0.6" height="0.5" depth="0.4" color="#1e3a8a"></a-box>
-                
-                <!-- Şoför ve Direksiyon -->
-                <a-box position="-0.5 0.5 -1.8" width="0.5" height="0.5" depth="0.4" color="#111827"></a-box>
-                <a-cylinder position="-0.5 0.7 -2.0" radius="0.2" height="0.05" rotation="45 0 0" color="#334155"></a-cylinder>
-
                 <!-- =================== LED TABELA =================== -->
-                <a-box position="0 1.65 -2.48" width="1.6" height="0.25" depth="0.05" color="#000"></a-box>
-                <!-- Kırmızı LED Yazı (Font düzeltildi) -->
-                <a-text value="{hat_adi}" color="#ef4444" position="0 1.65 -2.52" rotation="0 180 0" align="center" width="7" material="shader: flat;"></a-text>
+                <!-- DİKKAT: İndirdiğin modelin boyutu farklı olursa tabelanın Y (yükseklik) ve Z (derinlik) ayarını değiştirmen gerekebilir! -->
+                <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
+                <a-text value="{hat_adi}" color="#ef4444" position="0 3.2 -2.55" rotation="0 180 0" align="center" width="8" material="shader: flat;"></a-text>
                 
                 <!-- Farlar -->
-                <a-box position="-0.7 0.4 -2.48" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.4}"></a-box>
-                <a-box position="0.7 0.4 -2.48" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.4}"></a-box>
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="-0.7 0.4 -2.52" rotation="-5 180 0"></a-entity>
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="0.7 0.4 -2.52" rotation="-5 180 0"></a-entity>
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="-1 1 -3" rotation="-5 180 0"></a-entity>
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="1 1 -3" rotation="-5 180 0"></a-entity>
 
-                <!-- DÖNEN TEKERLEKLER (Yüksekliği ayarlandı) -->
-                <a-entity position="-0.9 0.15 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
-                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
-                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder>
-                </a-entity>
-                <a-entity position="0.9 0.15 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
-                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
-                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder>
-                </a-entity>
-                <a-entity position="-0.9 0.15 -1.4" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
-                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
-                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder>
-                </a-entity>
-                <a-entity position="0.9 0.15 -1.4" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
-                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
-                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder>
-                </a-entity>
             </a-entity>
 
-            <!-- AKAN YOL -->
-            <a-plane position="0 0.01 -5" rotation="-90 0 0" width="5" height="40" color="#334155" shadow="receive: true"></a-plane>
+            <!-- AKAN YOL (Tam yere sıfırlandı) -->
+            <a-plane position="0 0 -5" rotation="-90 0 0" width="6" height="40" color="#334155" shadow="receive: true"></a-plane>
             <a-entity animation="property: position; from: 0 0.02 -15; to: 0 0.02 5; loop: true; dur: 500; easing: linear">
                 <a-plane position="0 0 0" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
                 <a-plane position="0 0 4" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
@@ -203,8 +161,8 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
                 <a-plane position="0 0 16" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
             </a-entity>
 
-            <!-- Kamerayı camdan içeri bakması için sol ön tarafa yerleştirdim -->
-            <a-entity camera look-controls orbit-controls="target: 0 0.8 -2; minDistance: 3; maxDistance: 15; initialPosition: -7 3 5; enableDamping: true; dampingFactor: 0.05"></a-entity>
+            <!-- Kamera -->
+            <a-entity camera look-controls orbit-controls="target: 0 1.5 -2; minDistance: 4; maxDistance: 20; initialPosition: -8 4 6; enableDamping: true; dampingFactor: 0.05"></a-entity>
         </a-scene>
     </body>
     </html>
