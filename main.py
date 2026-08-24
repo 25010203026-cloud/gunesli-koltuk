@@ -138,7 +138,7 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
                 <!-- İndirdiğin 3D Modeli Çağırıyoruz -->
-                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
+                <a-entity gltf-model="#real-bus" scale="15 15 15" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
                 
                 <!-- =================== LED TABELA =================== -->
                 <!-- DİKKAT: İndirdiğin modelin boyutu farklı olursa tabelanın Y (yükseklik) ve Z (derinlik) ayarını değiştirmen gerekebilir! -->
