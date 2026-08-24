@@ -21,7 +21,7 @@ def veritabani_yukle():
 sakus_veritabanı = veritabani_yukle()
 
 # ==========================================
-# 1. PUSULA (COMPASS) VE GÜNEŞ MATEMATİĞİ
+# 1. PUSULA (COMPASS) VE GÜNEŞ MATEMATİĞİ (ANA İSKELET - DOKUNULMADI)
 # ==========================================
 def yon_hesapla(enlem1, boylam1, enlem2, boylam2):
     lat1, lat2 = math.radians(enlem1), math.radians(enlem2)
@@ -69,11 +69,10 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GELİŞMİŞ MODEL & TABELA)
 # ==========================================
-def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek=""):
+def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
-    # Güneşin/Ayın konumunu hesaplıyoruz
     y_pos = max(3.0, 25.0 * math.sin(math.radians(max(1.0, abs(yukseklik)))))
     x_pos = ((sag - sol) / 100.0) * 15.0
     
@@ -82,17 +81,17 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek=""):
         light_color = "#94a3b8"
         dir_intensity = "0.3"
         cisim = "🌙 Ay"
-        headlight_intensity = "5.0"
+        headlight_intensity = "3.0"
         far_rengi = "#fde047"
     elif abs(yukseklik) < 15: 
-        env_preset = "yavapai" # Gün batımı/doğumu hissiyatı
+        env_preset = "yavapai" 
         light_color = "#fb923c"
         dir_intensity = "1.5"
         cisim = "🌅 Güneş"
         headlight_intensity = "0.0"
         far_rengi = "#ffffff"
     else: 
-        env_preset = "default" # Gündüz
+        env_preset = "default" 
         light_color = "#fef08a"
         dir_intensity = "2.0"
         cisim = "☀️ Güneş"
@@ -120,50 +119,87 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek=""):
     </head>
     <body>
         <div class="panel">{mesaj}</div>
-        <!-- Antialiasing açık, fiziksel tabanlı render (colorManagement) aktif -->
         <a-scene embedded renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
-            <!-- Premium Çevre Eklentisi (Güneşe göre değişir) -->
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
             
-            <!-- Dinamik Sinematik Işıklandırma -->
-            <a-entity light="type: ambient; color: #ffffff; intensity: 0.4"></a-entity>
-            <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 4096; shadowMapWidth: 4096; shadowBias: -0.0005;" position="{x_pos} {y_pos} 5"></a-entity>
-            
+            <a-entity light="type: ambient; color: #ffffff; intensity: 0.5"></a-entity>
+            <a-entity light="type: directional; castShadow: true; color: {light_color}; intensity: {dir_intensity}; shadowMapHeight: 2048; shadowMapWidth: 2048; shadowBias: -0.0005;" position="{x_pos} {y_pos} 5"></a-entity>
             <a-sphere position="{x_pos} {y_pos+2} -10" radius="2" material="shader: flat; color: {light_color}"></a-sphere>
 
             <!-- ========================================== -->
-            <!-- PREMIUM OTOBÜS MODELİ (PBR MATERYALLERİYLE) -->
+            <!-- PREMIUM HAREKETLİ OTOBÜS VE LED TABELA     -->
             <!-- ========================================== -->
-            <!-- İPUCU: Gerçek bir 3D model (.glb) bulduğunda aşağıdaki kodları silip şunu yazabilirsin: -->
-            <!-- <a-entity gltf-model="url(https://seninsiten.com/otobus.glb)" position="0 0.8 -2" scale="1 1 1" shadow="cast:true; receive:true"></a-entity> -->
-            
-            <a-entity position="0 0.8 -2" animation="property: position; to: 0 0.85 -2; dir: alternate; dur: 350; loop: true; easing: easeInOutSine">
+            <!-- Otobüsün hafif süspansiyon sallanması -->
+            <a-entity position="0 0.8 -2" animation="property: position; to: 0 0.83 -2; dir: alternate; dur: 200; loop: true; easing: easeInOutSine">
                 
-                <!-- Kaporta (Metalik ve Parlak - roughness düşük, metalness yüksek) -->
-                <a-box position="0 0.7 0" width="1.8" height="1.5" depth="4.5" color="#1d4ed8" material="metalness: 0.6; roughness: 0.2; clearCoat: 1.0" shadow="cast: true; receive: true"></a-box>
+                <!-- Ana Gövde (Parlak Beyaz) -->
+                <a-box position="0 0.8 0" width="1.9" height="1.6" depth="5" color="#f8fafc" material="metalness: 0.2; roughness: 0.3; clearCoat: 1.0" shadow="cast: true; receive: true"></a-box>
                 
-                <!-- Şerit -->
-                <a-box position="0 0.2 0" width="1.82" height="0.15" depth="4.52" color="#eab308" material="metalness: 0.3; roughness: 0.5"></a-box>
+                <!-- Sakarya Yeşili Alt Şerit -->
+                <a-box position="0 0.15 0" width="1.92" height="0.3" depth="5.02" color="#16a34a" material="roughness: 0.6"></a-box>
                 
-                <!-- Camlar (Yansımalı ve Yarı Şeffaf) -->
-                <a-box position="0 1.3 0" width="1.75" height="0.5" depth="4.2" color="#0ea5e9" material="transparent: true; opacity: 0.6; metalness: 0.9; roughness: 0.0" shadow="cast: false; receive: true"></a-box>
+                <!-- Ön Cam (Koyu Siyah/Mavi) -->
+                <a-box position="0 1.0 -2.51" width="1.8" height="1.0" depth="0.05" color="#0f172a" material="opacity: 0.85; roughness: 0.1"></a-box>
                 
-                <!-- Farlar (Gece Patlar, Gündüz Söner) -->
-                <a-box position="-0.6 0.4 -2.26" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.5}"></a-box>
-                <a-box position="0.6 0.4 -2.26" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.5}"></a-box>
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 45; penumbra: 0.5; castShadow: true;" position="-0.6 0.4 -2.26" rotation="-10 180 0"></a-entity>
-                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 45; penumbra: 0.5; castShadow: true;" position="0.6 0.4 -2.26" rotation="-10 180 0"></a-entity>
+                <!-- Yan Camlar (Bütünleşik siyah bant) -->
+                <a-box position="-0.96 1.0 0" width="0.05" height="0.8" depth="4.8" color="#0f172a" material="opacity: 0.85; roughness: 0.1"></a-box>
+                <a-box position="0.96 1.0 0" width="0.05" height="0.8" depth="4.8" color="#0f172a" material="opacity: 0.85; roughness: 0.1"></a-box>
+                
+                <!-- =================== LED TABELA =================== -->
+                <!-- Ön Tabela Kutusu -->
+                <a-box position="0 1.65 -2.52" width="1.6" height="0.25" depth="0.05" color="#000"></a-box>
+                <!-- Kırmızı LED Yazı (Seçilen hat numarasını gösterir) -->
+                <a-text value="{hat_adi}" color="#ef4444" position="0 1.65 -2.55" rotation="0 180 0" align="center" width="7" font="kelsonsans" material="shader: flat;"></a-text>
+                
+                <!-- Yan Tabela -->
+                <a-box position="0.96 1.6 1.5" width="0.8" height="0.2" depth="0.05" color="#000" rotation="0 90 0"></a-box>
+                <a-text value="{hat_adi}" color="#ef4444" position="1.0 1.6 1.5" rotation="0 90 0" align="center" width="5" font="kelsonsans" material="shader: flat;"></a-text>
+                <!-- =================================================== -->
 
-                <!-- Tekerlekler (Lastik dokusu) -->
-                <a-cylinder position="-0.9 -0.2 1.2" radius="0.35" height="0.25" rotation="0 0 90" color="#111" material="roughness: 0.9" shadow="cast: true"></a-cylinder>
-                <a-cylinder position="0.9 -0.2 1.2" radius="0.35" height="0.25" rotation="0 0 90" color="#111" material="roughness: 0.9" shadow="cast: true"></a-cylinder>
-                <a-cylinder position="-0.9 -0.2 -1.2" radius="0.35" height="0.25" rotation="0 0 90" color="#111" material="roughness: 0.9" shadow="cast: true"></a-cylinder>
-                <a-cylinder position="0.9 -0.2 -1.2" radius="0.35" height="0.25" rotation="0 0 90" color="#111" material="roughness: 0.9" shadow="cast: true"></a-cylinder>
+                <!-- Farlar -->
+                <a-box position="-0.7 0.4 -2.52" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.4}"></a-box>
+                <a-box position="0.7 0.4 -2.52" width="0.3" height="0.15" depth="0.05" material="shader: flat; color: {far_rengi}; opacity: {1.0 if yukseklik < 0 else 0.4}"></a-box>
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="-0.7 0.4 -2.52" rotation="-5 180 0"></a-entity>
+                <a-entity light="type: spot; color: {far_rengi}; intensity: {headlight_intensity}; angle: 40; penumbra: 0.5; castShadow: true;" position="0.7 0.4 -2.52" rotation="-5 180 0"></a-entity>
+
+                <!-- =================== DÖNEN TEKERLEKLER =================== -->
+                <a-entity position="-0.9 -0.1 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder> <!-- Jant -->
+                </a-entity>
+                
+                <a-entity position="0.9 -0.1 1.6" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder> <!-- Jant -->
+                </a-entity>
+
+                <a-entity position="-0.9 -0.1 -1.4" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder> <!-- Jant -->
+                </a-entity>
+
+                <a-entity position="0.9 -0.1 -1.4" animation="property: rotation; to: -360 0 0; loop: true; dur: 400; easing: linear">
+                    <a-cylinder radius="0.35" height="0.25" rotation="0 0 90" color="#111" shadow="cast: true"></a-cylinder>
+                    <a-cylinder radius="0.18" height="0.27" rotation="0 0 90" color="#94a3b8"></a-cylinder> <!-- Jant -->
+                </a-entity>
             </a-entity>
 
-            <!-- Gelişmiş Kamera ve Kontroller -->
-            <a-entity camera look-controls orbit-controls="target: 0 0.8 -2; minDistance: 3; maxDistance: 15; initialPosition: -7 5 8; enableDamping: true; dampingFactor: 0.05"></a-entity>
+            <!-- =================== AKAN ASFALT YOL =================== -->
+            <a-plane position="0 0.01 -5" rotation="-90 0 0" width="5" height="40" color="#334155" shadow="receive: true"></a-plane>
+            
+            <!-- Yol Şeritleri (Hızla geriye doğru akar) -->
+            <a-entity animation="property: position; from: 0 0.02 -15; to: 0 0.02 5; loop: true; dur: 500; easing: linear">
+                <a-plane position="0 0 0" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+                <a-plane position="0 0 4" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+                <a-plane position="0 0 8" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+                <a-plane position="0 0 12" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+                <a-plane position="0 0 16" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+                <a-plane position="0 0 20" rotation="-90 0 0" width="0.15" height="2" color="#f8fafc"></a-plane>
+            </a-entity>
+
+            <!-- Kamerayı ön-çapraza aldık ki tabelayı ve dönüşü görebilelim -->
+            <a-entity camera look-controls orbit-controls="target: 0 0.8 -2; minDistance: 3; maxDistance: 15; initialPosition: 6 3 -8; enableDamping: true; dampingFactor: 0.05"></a-entity>
         </a-scene>
     </body>
     </html>
@@ -271,7 +307,8 @@ else:
     
     with col2:
         if st.session_state.sonuc_goster:
-            uc_boyutlu_motor(st.session_state.sag_oran, st.session_state.sol_oran, st.session_state.yukseklik, f"{st.session_state.zaman_etiketi}")
+            # KRİTİK DEĞİŞİKLİK: Seçilen hattın adını (Örn: 24K) animasyon motoruna gönderiyoruz!
+            uc_boyutlu_motor(st.session_state.sag_oran, st.session_state.sol_oran, st.session_state.yukseklik, f"{st.session_state.zaman_etiketi}", hat_kisa)
         
         with st.expander("🗺️ Güneş Analiz Haritası (Isı Haritası)", expanded=True if not st.session_state.sonuc_goster else False):
             if len(duraklar) > 0:
