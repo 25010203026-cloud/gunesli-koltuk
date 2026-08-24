@@ -69,7 +69,7 @@ def gunesi_hesapla_compass(coğrafi_rota, zaman_utc):
     return sag_oran, sol_oran, toplam_mesafe, gunes_yuksekligi, renkli_rota_segmentleri
 
 # ==========================================
-# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU
+# 2. UNREAL LITE - PREMIUM 3D OYUN MOTORU (GERÇEK 3D MODEL)
 # ==========================================
 def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     is_night = yukseklik < 0
@@ -122,8 +122,8 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
         <a-scene embedded renderer="antialias: true; colorManagement: true;" shadow="type: pcfsoft" style="height: 450px; width: 100%;" vr-mode-ui="enabled: false">
             
             <a-assets>
-                <!-- TAM LİNK BURADA -->
-                <a-asset-item id="real-bus" src="https://cdn.jsdelivr.net/gh/25010203026-cloud/gunesli-koltuk@main/otobus.glb"></a-asset-item>
+                <!-- DİKKAT: Cache sorununu çözmek için jsdelivr yerine Githack'in CANLI linkini koydum! -->
+                <a-asset-item id="real-bus" src="https://raw.githack.com/25010203026-cloud/gunesli-koltuk/main/otobus.glb"></a-asset-item>
             </a-assets>
 
             <a-entity environment="preset: {env_preset}; groundYScale: 2; skyType: atmosphere; lighting: none; shadow: true"></a-entity>
@@ -136,8 +136,8 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
             <!-- ========================================== -->
             <a-entity position="0 0 -2" animation="property: position; to: 0 0.03 -2; dir: alternate; dur: 250; loop: true; easing: easeInOutSine">
                 
-                <!-- OTOBÜSÜ BURADA KÜÇÜLTTÜM: scale="0.2 0.2 0.2" -->
-                <a-entity gltf-model="#real-bus" scale="0.2 0.2 0.2" position="0 0.5 0" shadow="cast: true; receive: true"></a-entity>
+                <!-- Otobüs Modeli (Eğer otobüs çok küçük kalırsa buradaki 1 1 1'leri 5 5 5 yap) -->
+                <a-entity gltf-model="#real-bus" scale="1 1 1" position="0 0 0" shadow="cast: true; receive: true"></a-entity>
                 
                 <!-- =================== LED TABELA =================== -->
                 <a-box position="0 3.2 -2.5" width="1.6" height="0.3" depth="0.05" color="#000"></a-box>
@@ -166,7 +166,6 @@ def uc_boyutlu_motor(sag, sol, yukseklik, mesaj_ek="", hat_adi="SAKUS"):
     </html>
     """
     components.html(html_code, height=470)
-
 # ==========================================
 # 3. KULLANICI ARAYÜZÜ (AKILLI ARAMA VE MOBİL OPTİMİZASYON)
 # ==========================================
